@@ -19,8 +19,5 @@
   "homepage": "https://github.com/pascualmg/jsmoke#readme",
   "devDependencies": {
     "jest": "^23.0.1"
-  },
-  "dependencies": {
-    "sqlite3": "^4.0.0"
   }
 }
