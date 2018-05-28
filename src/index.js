@@ -2,7 +2,7 @@
  * skel para el router , levanta un servidor que
  * escucha peticiones en el puerto 8888.
  */
-const http = require('http');
+import http from 'http';
 
 const server = http.createServer(function (request, response) {
   console.log('me ha entrado una peti por...: ', request.method);//TODO: borrame.
