@@ -4,7 +4,7 @@
   "description": "mimimalist mvc node framework",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --watch --colors --mode=development",
+    "build": "babel src --experimental --source-maps-inline -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +18,17 @@
   },
   "homepage": "https://github.com/pascualmg/jsmoke#readme",
   "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "jest": "^23.0.1"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ],
+    "plugins": ["transform-object-rest-spread"]
   },
   "dependencies": {
     "sqlite3": "^4.0.0"
