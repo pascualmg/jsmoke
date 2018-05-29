@@ -16,8 +16,10 @@ const server = http.createServer(function (request, response) {
         response.write("smoke en acción");
         
         conn.test();
-        console.log("vale" , conn.query("SELECT rowid AS id , info FROM prueba", console.log ));
+        let result = conn.query("SELECT rowid AS id , info FROM prueba", console.log );
         conn.close();
+
+        setInterval(result=>console.log(result), 1000);
     } else {
 
         response.write(request.method);

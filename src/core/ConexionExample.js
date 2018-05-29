@@ -5,9 +5,9 @@ sqlite.verbose();
 
 function generate() {
     const db = new sqlite.Database(':memory:');
+    let result = [];
 
     function query(sql, eachRowCallback){
-         let result = [];
         db.serialize(() => {
             db.each(sql,(err, row) => {
                 eachRowCallback(row);
