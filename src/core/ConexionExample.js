@@ -6,20 +6,18 @@ sqlite.verbose();
 function generate() {
     const db = new sqlite.Database(':memory:');
 
-    function query(sql){
+    function query(sql, eachRowCallback){
+         let result = [];
         db.serialize(() => {
-            let allResults = [];
-            console.log('procesando sql', sql);//TODO: borrame.
             db.each(sql,(err, row) => {
-                console.log('procesando...row-->', row );//TODO: borrame.
-                allResults.push(row);
+                eachRowCallback(row);
+                result.push(row);
             });
-            return allResults;
         });
+        return result;
     }
     async function test() {
         db.serialize(() => {
-            let result = [];
             //Creamos tabla
             db.run("CREATE TABLE prueba (info TEXT)");
 
