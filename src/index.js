@@ -4,13 +4,20 @@
  */
 import http from 'http';
 
+import ConexionExample from './core/ConexionExample.js';
+let conn = ConexionExample.generate();
+
+
 const server = http.createServer(function (request, response) {
   console.log('me ha entrado una peti por...: ', request.method);//TODO: borrame.
   console.log('desde la url: ', request.url);//TODO: borramoe.
 
-
     if(request.url === "/endpoint") {
         response.write("smoke en acción");
+        
+        conn.test();
+        console.log( conn.query("SELECT rowid AS id , info FROM prueba") );
+        conn.close();
     } else {
 
         response.write(request.method);
