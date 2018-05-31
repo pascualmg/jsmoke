@@ -4,8 +4,11 @@
  */
 import http from 'http';
 
-import ConexionExample from './core/ConexionExample.js';
+import ConexionExample from './core/ConexionExample';
+import Conexion from './core/Conexion';
+
 let conn = ConexionExample.generate();
+let con = Conexion.Conexion;
 
 
 const server = http.createServer(function (request, response) {
@@ -14,15 +17,17 @@ const server = http.createServer(function (request, response) {
 
     if(request.url === "/endpoint") {
         response.write("smoke en acción");
-        
-        conn.test();
-        console.log("vale" , conn.query("SELECT rowid AS id , info FROM prueba", console.log ));
-        conn.close();
+
+        con.executeQuery("select * from tipo", (result) => response.write(result));
+        //conn.test();
+        //console.log("vale" , conn.query("SELECT rowid AS id , info FROM prueba", console.log ));
+        //conn.close();
     } else {
 
         response.write(request.method);
     }
     response.end();
 });
+
 
 server.listen(8888);
