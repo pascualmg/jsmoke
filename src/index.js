@@ -1,30 +1,16 @@
-/**
- * skel para el router , levanta un servidor que
- * escucha peticiones en el puerto 8888.
- */
-import http from 'http';
+//https://www.udemy.com/the-advanced-web-developer-bootcamp/learn/v4/t/lecture/7854250?start=0
 
-import ConexionExample from './core/ConexionExample.js';
-let conn = ConexionExample.generate();
+import express from 'express'
+import ConexionExample from './core/ConexionExample.js'
+const app = express();
 
-
-const server = http.createServer(function (request, response) {
-  console.log('me ha entrado una peti por...: ', request.method);//TODO: borrame.
-  console.log('desde la url: ', request.url);//TODO: borramoe.
-
-    if(request.url === "/endpoint") {
-        response.write("smoke en acción");
-        
-        conn.test();
-        let result = conn.query("SELECT rowid AS id , info FROM prueba", console.log );
-        conn.close();
-
-        setInterval(result=>console.log(result), 1000);
-    } else {
-
-        response.write(request.method);
-    }
-    response.end();
+app.get('/', function (req, res) {
+   res.send({algo: "ostia puta", cosa: {cosa:"algo"}})
+    const conn = ConexionExample.generate();
+    conn.test();
+    conn.query("SELECT rowid AS id , info FROM prueba",console.log);
 });
 
-server.listen(8888);
+app.listen(8888, function () {
+   console.log('app arrancada en el puerto...', 8888);//TODO: borrame.
+});

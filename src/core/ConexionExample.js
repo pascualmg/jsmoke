@@ -21,6 +21,8 @@ function generate() {
             //Creamos tabla
             db.run("CREATE TABLE prueba (info TEXT)");
 
+            console.log('creando tabla' );//TODO: borrame.
+
             //llenamos de fixtures.
             const stmt = db.prepare("INSERT INTO prueba VALUES (?)");
             for (let i = 0; i < 10; i++) {
