@@ -1,17 +1,30 @@
 var sqlite3 = require('sqlite3').verbose();
 
+var db = new sqlite3.Database("D:/Programacion/Sqlite/zapalevi.db");
+var Conexion = {};
 
-function Conexion(path) {
-    this.db = this.db || new sqlite3.Database(path);
-    this.exeQuery = function(sql) {
-        return this.db.prepare(sql);
-    };
 
+Conexion.executeQuery = function (sql, callback) {
+    var result = [];
+    db.each(sql,
+        function item(err, row) {
+            if (row) {
+                result.push(row);
+            }
+        },
+        function complete() {
+            var obj = {
+                proveedores: result
+            };
+            callback(obj);
+        });
+};
+
+function putamierda(result) {
+    console.log(JSON.stringify(result));
 }
+Conexion.executeQuery("select * from proveedor", putamierda);
+export default {Conexion};
 
-var con = new Conexion('D:/Programacion/Sqlite/zapalevi.db');
-var pro = con.exeQuery("select nombre from proveedor");
 
-/*nombresPro.forEach((item) => {
-   console.log(item.nombre);
-});*/
+
