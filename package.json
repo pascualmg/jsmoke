@@ -35,6 +35,8 @@
     ]
   },
   "dependencies": {
+    "rxjs": "^6.2.0",
+    "rxjs-compat": "^6.2.0",
     "sqlite3": "^4.0.0"
   }
 }

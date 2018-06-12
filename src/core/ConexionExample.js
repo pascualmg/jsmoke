@@ -7,12 +7,12 @@ function generate() {
     const db = new sqlite.Database(':memory:');
     let result = [];
 
-    function query(sql, eachRowCallback){
+    function query(sql, eachRowCallback, complete){
         db.serialize(() => {
             db.each(sql,(err, row) => {
                 eachRowCallback(row);
                 result.push(row);
-            });
+            },complete);
         });
         return result;
     }
