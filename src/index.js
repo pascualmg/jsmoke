@@ -13,40 +13,6 @@ app.listen(
     () => console.info('Server running on port ', 8888)
 );
 
-/**
- * Crea un observable desde una consulta a una SQLite.
- *
- * Usando para probar con una dependencia muy fea
- * que wrappea el driver real de SQLite .
- * @todo Refactor con el driver nativo en otra ruta.
- *
- * @Note4levi:  fijate únicamente  en el uso que se le da , no en su implementación, por ahora.
- * @param query
- * @returns {*}
- * @constructor
- */
-const SqlLiteQueryObservableFromConexionExample = function (query) {
-    return Observable.create(function (observer) {
-        const conn = ConexionExample.generate();
-        try {
-            conn.test();
-            conn.query(
-                query,
-                (item) => observer.next(item),
-                () => {
-                    observer.complete()
-                }
-            );
-        } catch (e) {
-            observer.error(e);
-        }
-        return () => {
-            conn.close()
-        };
-    });
-};
-
-
 app.get('/', function (req, res) {
     conn.test();
     conn.query(
@@ -55,25 +21,6 @@ app.get('/', function (req, res) {
         () => console.log('completado')//cuando no hay rows
     );
     res.json("mira en la consola del server la salida pidgeon");
-});
-
-app.get('/observable-con-dependencia-pestosa', function (req, res) {
-    const query = "SELECT rowid AS id , info FROM prueba";
-    const stream$ = SqlLiteQueryObservableFromConexionExample(query);
-    let result = [];
-
-    /**
-     * A un observable , se le pasan 3 callbacks :
-     * el que se ejecuta...
-     *  por cada item,
-     *  si hay un error,
-     *  al completar el flujo.
-     */
-    stream$.subscribe(//nos subscribimos al flujo de datos ( iterable + eventEmitter )
-        (next) => result.push(next), //por cada uno de los items pusheamos al result...
-        (error) => res.json(error), //si nos peta por lo que sea mandamos ese error como json en la response.
-        () => res.json(result),    //Al terminar el flujo, en el complete enviamos la response con el result.
-    )
 });
 
 app.get('/observable', function (req, res) {
@@ -97,11 +44,13 @@ app.get('/observable', function (req, res) {
             //db.each("SELECT rowid AS id , info FROM prueba", (err, row) => console.log('result', row.id, " ", row.info, result) && result.push(row));
         })
     })(db);
+
+    //////////////////////////////////////////////////////
     const stream$ = rxObservableOfSqliteQuery(query, db);
     let result = [];
     /**
      * A un observable , se le pasan 3 callbacks :
-     * el que se ejecuta...
+     *  Son estos:
      *  por cada item,
      *  si hay un error,
      *  al completar el flujo.
