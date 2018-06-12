@@ -2,7 +2,7 @@
 
 import express from 'express'
 import ConexionExample from './core/ConexionExample.js'
-import { Observable } from 'rxjs';// A tomar por culo los problemas de asincronía 2018.
+import { Observable } from 'rxjs';// A tomar por culo los problemas de asincronía , Cuenca 2017.
 
 const app = express();
 const conn = ConexionExample.generate();
