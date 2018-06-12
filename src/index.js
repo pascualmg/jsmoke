@@ -2,7 +2,7 @@
 
 import express from 'express'
 import ConexionExample from './core/ConexionExample.js'
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 
 const app = express();
 const conn = ConexionExample.generate();
@@ -12,18 +12,20 @@ app.listen(
     () => console.info('Server running on port ', 8888)
 );
 
- const SqlLiteQueryObservable = function (query , conn) {
-    const createdObservable = Observable.create(function(observer){
-    conn.query(
-        observer.next,//x cada una de las rows...
-        observer.complete
-    );
-        return {
-            unsubscribe: () => {console.log('que lastima, con lo que me gusta que me observen...') }
-        }
+const SqlLiteQueryObservable = function (query, conn) {
+    const createdObservable = Observable.create(function (observer) {
+        conn.test();
+        conn.query(
+            query,
+            (item) => observer.next(item),
+            () => {observer.complete()}
+            );
+        return () => {conn.close()};
     });
     return createdObservable;
 };
+
+
 app.get('/', function (req, res) {
     conn.test();
     conn.query(
@@ -35,13 +37,14 @@ app.get('/', function (req, res) {
 });
 
 app.get('/observable', function (req, res) {
-
     const query = "SELECT rowid AS id , info FROM prueba";
-    const stream$ = SqlLiteQueryObservable(query,conn);
-    stream$.subscribe(
-        console.log,
-        console.log,
-        res.json("y he terminado de observar......omgomgomgomgomgojmgomgojm"),
+    const stream$ = SqlLiteQueryObservable(query, conn);
+    let result = [];
+
+    stream$.subscribe(//nos subscribimos al stream
+        (next) => result.push(next), //por cada uno de los items...
+        (error) => res.json(error),
+        () => res.json(result),
     )
 });
 app.get('/location', (req, res) => {
