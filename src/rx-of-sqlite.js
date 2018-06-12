@@ -1,19 +1,18 @@
 import {Observable} from 'rxjs';
-import ConexionExample from "./core/ConexionExample"; // A tomar por culo los problemas de asincronía , Cuenca 2017.
-import sqlite from 'sqlite3';
-
-sqlite.verbose();
 
 function rxObservableOfSqliteQuery(query, db) {
     return Observable.create(function Subscription(observer) {
         const conn = ConexionExample.generate();
         try {
-            conn.query(
+            db.each(
                 query,
-                (item) => observer.next(item),
-                () => {
-                    observer.complete()
-                }
+                (err, row) => {
+                    if (typeof(err) === "undefined") {
+                        observer.error(err);
+                    }
+                   observer.next(row);
+                },
+                () => { observer.complete() }
             );
         } catch (e) {
             observer.error(e);
