@@ -2,25 +2,45 @@
 
 import express from 'express'
 import ConexionExample from './core/ConexionExample.js'
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';// A tomar por culo los problemas de asincronía 2018.
 
 const app = express();
 const conn = ConexionExample.generate();
-
 app.listen(
     8888,
     () => console.info('Server running on port ', 8888)
 );
 
-const SqlLiteQueryObservable = function (query, conn) {
+/**
+ * Crea un observable desde una consulta a una SQLite.
+ *
+ * Usando para probar con una dependencia muy fea
+ * que wrappea el driver real de SQLite .
+ * @todo Refactor con el driver nativo en otra ruta.
+ *
+ * @Note4levi:  fijate únicamente  en el uso que se le da , no en su implementación, por ahora.
+ * @param query
+ * @returns {*}
+ * @constructor
+ */
+const SqlLiteQueryObservableFromConexionExample = function (query) {
     const createdObservable = Observable.create(function (observer) {
-        conn.test();
-        conn.query(
-            query,
-            (item) => observer.next(item),
-            () => {observer.complete()}
+        const conn = ConexionExample.generate();
+        try {
+            conn.test();
+            conn.query(
+                query,
+                (item) => observer.next(item),
+                () => {
+                    observer.complete()
+                }
             );
-        return () => {conn.close()};
+        } catch (e) {
+            observer.error(e);
+        }
+        return () => {
+            conn.close()
+        };
     });
     return createdObservable;
 };
@@ -36,17 +56,18 @@ app.get('/', function (req, res) {
     res.json("mira en la consola del server la salida pidgeon");
 });
 
-app.get('/observable', function (req, res) {
+app.get('/observable-con-dependencia-pestosa', function (req, res) {
     const query = "SELECT rowid AS id , info FROM prueba";
-    const stream$ = SqlLiteQueryObservable(query, conn);
+    const stream$ = SqlLiteQueryObservableFromConexionExample(query);
     let result = [];
 
-    stream$.subscribe(//nos subscribimos al stream
-        (next) => result.push(next), //por cada uno de los items...
-        (error) => res.json(error),
-        () => res.json(result),
+    stream$.subscribe(//nos subscribimos al flujo de datos ( iterable + eventEmitter )
+        (next) => result.push(next), //por cada uno de los items pusheamos al result...
+        (error) => res.json(error), //si nos peta por lo que sea mandamos ese error como json en la response.
+        () => res.json(result),    //Al terminar el flujo, en el complete enviamos la response con el result.
     )
 });
+
 app.get('/location', (req, res) => {
     //mocked data.
     res.send(
