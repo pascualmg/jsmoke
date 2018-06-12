@@ -24,7 +24,7 @@ app.listen(
  * @constructor
  */
 const SqlLiteQueryObservableFromConexionExample = function (query) {
-    const createdObservable = Observable.create(function (observer) {
+    return Observable.create(function (observer) {
         const conn = ConexionExample.generate();
         try {
             conn.test();
@@ -42,7 +42,6 @@ const SqlLiteQueryObservableFromConexionExample = function (query) {
             conn.close()
         };
     });
-    return createdObservable;
 };
 
 
