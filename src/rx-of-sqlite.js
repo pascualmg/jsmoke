@@ -1,25 +1,25 @@
 import {Observable} from 'rxjs';
-
+/**
+ * todo: doc.
+ */
 function rxObservableOfSqliteQuery(query, db) {
     return Observable.create(function Subscription(observer) {
-        const conn = ConexionExample.generate();
         try {
-            db.each(
-                query,
-                (err, row) => {
-                    if (typeof(err) === "undefined") {
-                        observer.error(err);
-                    }
-                   observer.next(row);
+
+            db.each(query, (err, row) => {
+                    observer.next(row);
                 },
-                () => { observer.complete() }
+                () => {
+                    observer.complete()
+                }
             );
         } catch (e) {
             observer.error(e);
         }
-        return () => {
-            conn.close()
-        };
+        return function unsubscribe() {
+            console.log('unsubscribed.',);//TODO: borrame.
+        }
     });
 }
+
 export default rxObservableOfSqliteQuery;

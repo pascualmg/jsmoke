@@ -2,8 +2,9 @@
 
 import express from 'express'
 import ConexionExample from './core/ConexionExample.js'
-import { Observable } from 'rxjs';// A tomar por culo los problemas de asincronía , Cuenca 2017.
+import {Observable} from 'rxjs';// A tomar por culo los problemas de asincronía , Cuenca 2017.
 import rxObservableOfSqliteQuery from './rx-of-sqlite.js'
+import sqlite from 'sqlite3';
 
 const app = express();
 const conn = ConexionExample.generate();
@@ -71,6 +72,43 @@ app.get('/observable-con-dependencia-pestosa', function (req, res) {
     stream$.subscribe(//nos subscribimos al flujo de datos ( iterable + eventEmitter )
         (next) => result.push(next), //por cada uno de los items pusheamos al result...
         (error) => res.json(error), //si nos peta por lo que sea mandamos ese error como json en la response.
+        () => res.json(result),    //Al terminar el flujo, en el complete enviamos la response con el result.
+    )
+});
+
+app.get('/observable', function (req, res) {
+    const query = "SELECT rowid AS id , info FROM prueba";
+    const db = new sqlite.Database(':memory:');
+    (function IIFFE_create_fixtures_in_db() {
+        db.serialize(() => {
+            //Creamos tabla
+            db.run("CREATE TABLE prueba (info TEXT)");
+
+            console.log('creando tabla');//TODO: borrame.
+
+            //llenamos de fixtures.
+            const stmt = db.prepare("INSERT INTO prueba VALUES (?)");
+            for (let i = 0; i < 10; i++) {
+                stmt.run("datosDePrueba" + i);
+            }
+            stmt.finalize();
+
+            //hacemos una query.
+            //db.each("SELECT rowid AS id , info FROM prueba", (err, row) => console.log('result', row.id, " ", row.info, result) && result.push(row));
+        })
+    })(db);
+    const stream$ = rxObservableOfSqliteQuery(query, db);
+    let result = [];
+    /**
+     * A un observable , se le pasan 3 callbacks :
+     * el que se ejecuta...
+     *  por cada item,
+     *  si hay un error,
+     *  al completar el flujo.
+     */
+    stream$.subscribe(//nos subscribimos al flujo de datos ( iterable + eventEmitter )
+        (next) => result.push(next), //por cada uno de los items pusheamos al result...
+        console.log,
         () => res.json(result),    //Al terminar el flujo, en el complete enviamos la response con el result.
     )
 });
