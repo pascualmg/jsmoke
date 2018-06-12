@@ -61,6 +61,13 @@ app.get('/observable-con-dependencia-pestosa', function (req, res) {
     const stream$ = SqlLiteQueryObservableFromConexionExample(query);
     let result = [];
 
+    /**
+     * A un observable , se le pasan 3 callbacks :
+     * el que se ejecuta...
+     *  por cada item,
+     *  si hay un error,
+     *  al completar el flujo.
+     */
     stream$.subscribe(//nos subscribimos al flujo de datos ( iterable + eventEmitter )
         (next) => result.push(next), //por cada uno de los items pusheamos al result...
         (error) => res.json(error), //si nos peta por lo que sea mandamos ese error como json en la response.
