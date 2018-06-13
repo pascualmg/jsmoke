@@ -25,6 +25,7 @@ app.get('/', function (req, res) {
 
 app.get('/observable', function (req, res) {
     const query = "SELECT rowid AS id , info FROM prueba";
+    sqlite.verbose();
     const db = new sqlite.Database(':memory:');
     (function IIFFE_create_fixtures_in_db() {
         db.serialize(() => {
