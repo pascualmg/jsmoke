@@ -57,9 +57,9 @@ app.get('/observable', function (req, res) {
      */
     stream$.subscribe(//nos subscribimos al flujo de datos ( iterable + eventEmitter )
         (next) => result.push(next), //por cada uno de los items pusheamos al result...
-        console.log,
+        (error) => res.json(error), //si hay error ...
         () => res.json(result),    //Al terminar el flujo, en el complete enviamos la response con el result.
-    )
+    );
 });
 
 app.get('/location', (req, res) => {
