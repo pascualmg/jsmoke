@@ -1,4 +1,5 @@
 import {Observable} from 'rxjs';
+
 /**
  * Creates an Observable of an SQL query from SQLite db
  * @param query plain sql text.
@@ -11,6 +12,7 @@ function rxObservableOfSqliteQuery(query, db) {
             db.each(//https://www.npmjs.com/package/sqlite3
                 query,
                 function onEachRow(err, row){
+                    if(err) observer.error(err);
                     observer.next(row);
                 },
                 function onComplete() {
