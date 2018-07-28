@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs';// A tomar por culo los problemas de asincronía , Cuenca 2017.
 
 /**
  * Creates an Observable of an SQL query from SQLite db
@@ -11,7 +11,10 @@ function rxObservableOfSqliteQuery(query, db) {
         try {
             db.each(//https://www.npmjs.com/package/sqlite3
                 query,
+                null,
                 function onEachRow(err, row){
+                  console.log('err', err);//TODO: borrame.
+                  
                     if(err) observer.error(err);
                     observer.next(row);
                 },

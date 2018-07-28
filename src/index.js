@@ -2,9 +2,9 @@
 
 import express from 'express'
 import ConexionExample from './core/ConexionExample.js'
-import {Observable} from 'rxjs';// A tomar por culo los problemas de asincronía , Cuenca 2017.
 import rxObservableOfSqliteQuery from './rx-of-sqlite.js'
 import sqlite from 'sqlite3';
+sqlite.verbose();
 
 const app = express();
 const conn = ConexionExample.generate();
@@ -25,7 +25,6 @@ app.get('/', function (req, res) {
 
 app.get('/observable', function (req, res) {
     const query = "SELECT rowid AS id , info FROM prueba";
-    sqlite.verbose();
     const db = new sqlite.Database(':memory:');
     (function IIFFE_create_fixtures_in_db() {
         db.serialize(() => {
