@@ -13,17 +13,9 @@ app.listen(
     () => console.info('Server running on port ', 8888)
 );
 
-app.get('/', function (req, res) {
-    conn.test();
-    conn.query(
-        "SELECT rowid AS id , info FROM prueba",
-        console.log,//x cada una de las rows...
-        () => console.log('completado')//cuando no hay rows
-    );
-    res.json("mira en la consola del server la salida pidgeon");
-});
 
-app.get('/observable', function (req, res) {
+/*example*/
+app.get('/', function (req, res) {
     const query = "SELECT rowid AS id , info FROM prueba";
     const db = new sqlite.Database(':memory:');
     (function IIFFE_create_fixtures_in_db() {
