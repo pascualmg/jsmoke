@@ -5,6 +5,8 @@ import ConexionExample from './core/ConexionExample.js'
 import {Observable} from 'rxjs';// A tomar por culo los problemas de asincronía , Cuenca 2017.
 import rxObservableOfSqliteQuery from './rx-of-sqlite.js'
 import sqlite from 'sqlite3';
+import {getOajax} from './oajax.js';
+sqlite.verbose();
 
 const app = express();
 const conn = ConexionExample.generate();
@@ -12,6 +14,7 @@ app.listen(
     8888,
     () => console.info('Server running on port ', 8888)
 );
+
 
 
 /*example*/
@@ -55,6 +58,27 @@ app.get('/', function (req, res) {
     );
 });
 
+app.get('/oajax', (req, res) => {
+	getOajax.subscribe(res.json);
+});
+
+app.get('/cursos', (req, res) => {
+  res.json(
+{ 
+  "id":"idCurso01",
+  "name" : "nombreCurso01", 
+  "datestart": "2018-01-01",
+  "hasExpired" : "false",
+  "inscriptions" : [
+		{ "name": "inscrito01"}, 
+		{ "name": "inscrito02"}, 
+		{ "name": "inscrito03"}, 
+		{ "name": "inscrito04"}, 
+		{ "name": "inscrito05"}, 
+   ] 
+}
+);
+});
 app.get('/location', (req, res) => {
     //mocked data.
     res.send(
