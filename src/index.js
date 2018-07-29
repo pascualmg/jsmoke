@@ -57,67 +57,37 @@ app.get('/', function (req, res) {
 
 
 app.get('/cursos', (req, res) => {
-  res.json(
-{ 
-  "id":"idCurso01",
+res.json([
+  {"id":"idCurso01",
   "name" : "nombreCurso01", 
   "datestart": "2018-01-01",
   "hasExpired" : "false",
-  "inscriptions" : [
-		{ "name": "inscrito01"}, 
-		{ "name": "inscrito02"}, 
-		{ "name": "inscrito03"}, 
-		{ "name": "inscrito04"}, 
-		{ "name": "inscrito05"}, 
-   ] 
-}
-);
-});
-app.get('/location', (req, res) => {
-    //mocked data.
-    res.send(
-        {
-            "id": "string",
-            "name": "string",
-            "type": "string",
-            "measure": {
-                "long": 0,
-                "high": 0,
-                "wide": 0
-            },
-            "articles": [
-                {
-                    "article": {
-                        "id": "string",
-                        "name": "string",
-                        "sku": "string",
-                        "path_number": "string",
-                        "serial_numbers": [
-                            "string"
-                        ],
-                        "eans": [
-                            "string"
-                        ],
-                        "movement_statistics": {
-                            "rotation": "string",
-                            "pending_orders": 0
-                        },
-                        "family": {
-                            "name": "string",
-                            "serial_number_required": true,
-                            "type": "volumetric"
-                        },
-                        "measure": {
-                            "long": 0,
-                            "high": 0,
-                            "wide": 0,
-                            "weight": 0
-                        }
-                    },
-                    "quantity": 0,
-                    "created_at": "2018-06-06T08:21:33.018Z"
-                }
-            ]
-        }
-    )
+  "inscriptions" : [ { "name": "inscrito01curso01"}, { "name": "inscrito02curso01"}, { "name": "inscrito03curso01"}, { "name": "inscrito04curso01"}, { "name": "inscrito05curso01"},] 
+  },
+  {"id":"idCurso01",
+  "name" : "nombreCurso01", 
+  "datestart": "2018-01-01",
+  "hasExpired" : "false",
+  "inscriptions" : [ { "name": "inscrito01curso01"}, { "name": "inscrito02curso01"}, { "name": "inscrito03curso01"}, { "name": "inscrito04curso01"}, { "name": "inscrito05curso01"},] 
+  },
+  {"id":"idCurso01",
+  "name" : "nombreCurso01", 
+  "datestart": "2018-01-01",
+  "hasExpired" : "false",
+  "inscriptions" : [ { "name": "inscrito01curso01"}, { "name": "inscrito02curso01"}, { "name": "inscrito03curso01"}, { "name": "inscrito04curso01"}, { "name": "inscrito05curso01"},] 
+  },
+  {"id":"idCurso01",
+  "name" : "nombreCurso01", 
+  "datestart": "2018-01-01",
+  "hasExpired" : "false",
+  "inscriptions" : [ { "name": "inscrito01curso01"}, { "name": "inscrito02curso01"}, { "name": "inscrito03curso01"}, { "name": "inscrito04curso01"}, { "name": "inscrito05curso01"},] 
+  },
+  {"id":"idCurso01",
+  "name" : "nombreCurso01", 
+  "datestart": "2018-01-01",
+  "hasExpired" : "false",
+  "inscriptions" : [ { "name": "inscrito01curso01"}, { "name": "inscrito02curso01"}, { "name": "inscrito03curso01"}, { "name": "inscrito04curso01"}, { "name": "inscrito05curso01"},] 
+  },
+
+	]); 
 });
