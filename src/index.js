@@ -1,7 +1,6 @@
 //https://www.udemy.com/the-advanced-web-developer-bootcamp/learn/v4/t/lecture/7854250?start=0
 
 import express from 'express'
-import ConexionExample from './core/ConexionExample.js'
 import rxObservableOfSqliteQuery from './rx-of-sqlite.js'
 import sqlite from 'sqlite3'
 sqlite.verbose()
@@ -13,7 +12,6 @@ app.use(function(req, res, next) {
     next()
 })
 
-const conn = ConexionExample.generate()
 app.listen(
     8888,
     () => console.info('Server running on port ', 8888)
@@ -22,6 +20,14 @@ app.listen(
 
 
 /*example*/
+//esto no lo detecta.
+/**
+ * selecciona los datos de pruebas
+ *
+ * @param {httprequest} req la request
+ * @param {httpresponse} res la response
+ * @returns {void} nada
+ */
 app.get('/', function (req, res) {
     const query = 'SELECT rowid AS id , info FROM prueba'
     const db = new sqlite.Database(':memory:');
@@ -30,7 +36,7 @@ app.get('/', function (req, res) {
             //Creamos tabla
             db.run('CREATE TABLE prueba (info TEXT)')
 
-            console.log('creando tabla')//TODO: borrame.
+            //console.log('creando tabla')//TODO: borrame.
 
             //llenamos de fixtures.
             const stmt = db.prepare('INSERT INTO prueba VALUES (?)')
