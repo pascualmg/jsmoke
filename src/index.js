@@ -70,7 +70,8 @@ app.get('/', function (req, res) {
 
 app.get('/cursos', (req, res) => {
   var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  console.log(ip)
+    var now = Date().toLocaleString();
+  console.log(ip, now)
     res.json([
         {'id':'idCurso01',
             'name' : 'nombreCurso01', 
