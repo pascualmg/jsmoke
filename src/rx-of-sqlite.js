@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs';// A tomar por culo los problemas de asincronía , Cuenca 2017.
 
 /**
  * Creates an Observable of an SQL query from SQLite db
@@ -23,7 +23,6 @@ function rxObservableOfSqliteQuery(query, db) {
             observer.error(e);
         }
         return function unsubscribe() {
-            console.log('unsubscribed.',);//TODO: borrame.
         }
     });
 }
